@@ -2,56 +2,42 @@
 <html lang="en">
 <head>
   <script>
-    if (localStorage.getItem("theme") === "light") {
-      document.documentElement.classList.add("light");
-    }
+    /* Apply saved theme before first paint to avoid a flash */
+    try {
+      if (localStorage.getItem("theme") === "light") {
+        document.documentElement.classList.add("light");
+      }
+    } catch (e) {}
   </script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Kieran O'Keeffe | Magic: The Gathering</title>
-  <meta
-    name="description"
-    content="Kieran O'Keeffe's personal Magic: The Gathering page."
-  >
+  <meta name="description" content="Kieran O'Keeffe's personal space for playing, exploring and sharing Magic: The Gathering.">
 
-  <meta
-    property="og:title"
-    content="Kieran O'Keeffe | Magic: The Gathering"
-  >
-  <meta
-    property="og:description"
-    content="A personal space for playing, exploring and sharing Magic: The Gathering."
-  >
+  <meta property="og:title" content="Kieran O'Keeffe | Magic: The Gathering">
+  <meta property="og:description" content="Magic: The Gathering is my serious hobby: a game I play, explore and want to share with others.">
   <meta property="og:type" content="website">
-
-  <meta name="twitter:card" content="summary">
-  <meta
-    name="twitter:title"
-    content="Kieran O'Keeffe | Magic: The Gathering"
-  >
-  <meta
-    name="twitter:description"
-    content="A personal space for playing, exploring and sharing Magic: The Gathering."
-  >
-
-  <!-- Add og:url after publishing to GitHub Pages -->
+  <!-- Add after publishing: <meta property="og:url" content="https://YOUR-USERNAME.github.io/YOUR-REPO/"> -->
   <!-- Add og:image later: 1200x630 PNG matching dark theme -->
 
-  <link
-    rel="icon"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%83nk rel="preconnect" href="https://fonts.googleapis.com">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kieran O'Keeffe | Magic: The Gathering">
+  <meta name="twitter:description" content="A personal space for playing, exploring and sharing Magic: The Gathering.">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%83%8F%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter-bg-grad: linear-gradient(
-        170deg,
-        #020a18 0%,
-        #041028 40%,
-        #06142e 70%,
-        #020a18 100%
-      );
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #020a18;
+      --bg-grad: linear-gradient(170deg, #020a18 0%, #041028 40%, #06142e 70%, #020a18 100%);
       --surface: rgba(8, 24, 56, 0.85);
+      --surface-strong: rgba(12, 28, 62, 0.97);
       --border: rgba(0, 170, 255, 0.12);
       --border-glow: rgba(0, 170, 255, 0.3);
       --text: #d0e0f0;
@@ -64,459 +50,759 @@
       --amber: #ffaa00;
       --red: #ff4466;
       --purple: #aa66ff;
+
+      --shadow: rgba(0, 0, 0, 0.35);
+      --header-bg: rgba(2, 10, 24, 0.72);
+      --grid: rgba(80, 180, 255, 0.03);
+      --on-accent: #02101f;
     }
 
     html.light {
-      --bg: #edf4fb;
-      --bg-grad: linear-gradient(
-        170deg,
-        #f7fbff 0%,
-        #e8f2fc 45%,
-        #dfeefa 75%,
-        #f7fbff 100%
-      );
+      --bg: #eef4fb;
+      --bg-grad: linear-gradient(170deg, #f8fbff 0%, #e9f2fc 45%, #dfeefa 75%, #f8fbff 100%);
       --surface: rgba(255, 255, 255, 0.9);
+      --surface-strong: rgba(255, 255, 255, 0.98);
       --border: rgba(0, 90, 160, 0.15);
-      --border-glow: rgba(0, 110, 190, 0.25);
-      --text: #29425c;
-      --text-bright: #102a43;
-      --text-dim: #59748f;
+      --border-glow: rgba(0, 110, 190, 0.35);
+      --text: #2b415a;
+      --text-bright: #0f2740;
+      --text-dim: #566f89;
 
-      --neon: #006fbd;
-      --cyan: #008da6;
-      --green: #008f58;
-      --amber: #a96300;
-      --red: #c62e4d;
-      --purple: #7045c7;
+      --neon: #0069b4;
+      --cyan: #007a8c;
+      --green: #00804e;
+      --amber: #9a5a00;
+      --red: #c22b4b;
+      --purple: #6a3fc2;
+
+      --shadow: rgba(35, 70, 110, 0.15);
+      --header-bg: rgba(244, 249, 254, 0.82);
+      --grid: rgba(0, 90, 160, 0.045);
+      --on-accent: #ffffff;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
       min-height: 100vh;
+      overflow-x: hidden;
       color: var(--text);
       background: var(--bg);
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", sans-serif;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
       font-size: 16px;
       line-height: 1.65;
       -webkit-font-smoothing: antialiased;
     }
 
-    .background {
+    /* ---------- Background layers (back to front) ---------- */
+    .bg-gradient {
       position: fixed;
       inset: 0;
       z-index: -4;
       background: var(--bg-grad);
     }
 
-    .grid {
+    .bg-grid {
       position: fixed;
       inset: 0;
       z-index: -3;
       background-image:
-        linear-gradient(
-          rgba(80, 180, 255, 0.035) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(80, 180, 255, 0.035) 1px,
-          transparent 1px
-        );
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
       background-size: 60px 60px;
     }
 
     .orb {
       position: fixed;
-      width: 340px;
-      height: 340px;
+      z-index: -2;
+      width: 420px;
+      height: 420px;
       border-radius: 50%;
       filter: blur(100px);
-      opacity: 0.08;
-      z-index: -2;
+      opacity: 0.1;
       pointer-events: none;
     }
 
-    .orb-one {
-      left: -280px;
-      top: 15%;
-      background: var(--cyan);
-      animation: float 18s ease-in-out infinite alternate;
-    }
+    /* Orbs sit in the side gutters, outside the 880px content column */
+    .orb-1 { top: 8%;  left: -300px;  background: var(--purple); animation: drift-a 20s ease-in-out infinite alternate; }
+    .orb-2 { top: 45%; right: -300px; background: var(--neon);   animation: drift-b 24s ease-in-out infinite alternate; }
+    .orb-3 { bottom: -160px; left: -260px; background: var(--green); animation: drift-a 28s ease-in-out infinite alternate-reverse; }
 
-    .orb-two {
-      right: -280px;
-      top: 50%;
-      background: var(--purple);
-      animation: float 22s ease-in-out infinite alternate-reverse;
-    }
+    @keyframes drift-a { to { transform: translate(90px, 70px) scale(1.12); } }
+    @keyframes drift-b { to { transform: translate(-90px, -60px) scale(0.92); } }
 
-    .orb-three {
-      left: -300px;
-      bottom: -120px;
-      background: var(--green);
-      animation: float 26s ease-in-out infinite alternate-reverse;
-    }
-
-    @keyframes float {
-      to {
-        transform: translate(100px, 70px) scale(1.15);
-      }
-    }
-
+    /* ---------- Layout ---------- */
     .container {
+      width: 100%;
       max-width: 880px;
       margin: 0 auto;
       padding: 0 20px;
     }
 
+    main { position: relative; z-index: 1; }
+
+    .skip-link {
+      position: absolute;
+      left: 16px;
+      top: -60px;
+      z-index: 200;
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: var(--on-accent);
+      background: var(--cyan);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 12px; }
+
+    a { color: var(--neon); text-decoration: none; }
+    a:hover { color: var(--cyan); text-shadow: 0 0 12px rgba(0, 229, 255, 0.3); }
+
+    :focus-visible {
+      outline: 3px solid var(--cyan);
+      outline-offset: 3px;
+    }
+
+    /* ---------- Header ---------- */
     header {
       position: sticky;
       top: 0;
       z-index: 100;
       border-bottom: 1px solid var(--border);
-      background: rgba(3, 13, 32, 0.72);
+      background: var(--header-bg);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
 
-    html.light header {
-      background: rgba(244, 249, 254, 0.82);
-    }
-
-    nav {
-      max-width: 880px;
-      height: 66px;
-      margin: 0 auto;
-      padding: 0 20px;
+    .nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      height: 66px;
     }
 
     .brand {
-      color: var(--text-bright);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    .controls {
       display: flex;
-      gap: 8px;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-bright);
+      font-family: Cinzel, Georgia, serif;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
     }
 
-    .icon-button {
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border-glow);
+      border-radius: 50%;
+      color: var(--cyan);
+      background: linear-gradient(135deg, rgba(170, 102, 255, 0.25), rgba(0, 170, 255, 0.12));
+      font-size: 14px;
+    }
+
+    .controls { display: flex; gap: 8px; }
+
+    .icon-btn {
+      display: grid;
+      place-items: center;
       width: 40px;
       height: 40px;
+      padding: 0;
       border: 1px solid var(--border);
       border-radius: 11px;
       color: var(--text);
       background: var(--surface);
-      cursor: pointer;
       font-size: 18px;
-      transition:
-        color 0.2s,
-        border-color 0.2s,
-        box-shadow 0.2s;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
     }
 
-    .icon-button:hover {
+    .icon-btn:hover {
       color: var(--cyan);
       border-color: var(--border-glow);
-      box-shadow: 0 0 18px rgba(0, 170, 255, 0.1);
+      box-shadow: 0 0 18px rgba(0, 170, 255, 0.15);
+      transform: translateY(-1px);
     }
 
-    main {
-      position: relative;
-      z-index: 1;
-    }
-
+    /* ---------- Hero ---------- */
     .hero {
-      padding: 95px 0 70px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(220px, 0.7fr);
+      align-items: center;
+      gap: 48px;
+      padding: 84px 0 56px;
     }
 
     .eyebrow {
-      color: var(--neon);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      color: var(--cyan);
       font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
+      font-weight: 700;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
     }
 
+    .eyebrow::before {
+      content: "";
+      width: 30px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--purple), var(--cyan));
+    }
+
+    h1, h2 { font-family: Cinzel, Georgia, serif; }
+
     h1 {
-      margin: 10px 0 12px;
+      margin: 0 0 10px;
       color: var(--text-bright);
-      font-size: clamp(48px, 9vw, 78px);
-      line-height: 1;
-      letter-spacing: -0.055em;
+      font-size: clamp(44px, 8vw, 74px);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
     }
 
     .role {
-      margin: 0 0 32px;
-      color: var(--cyan);
+      margin: 0 0 26px;
+      color: var(--amber);
       font-size: 20px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .hero-line {
-      max-width: 760px;
-      margin: 0 0 34px;
+      max-width: 620px;
+      margin: 0 0 32px;
       color: var(--text-bright);
-      font-size: clamp(25px, 4vw, 37px);
-      line-height: 1.3;
-      letter-spacing: -0.025em;
+      font-size: clamp(22px, 3.3vw, 33px);
+      line-height: 1.32;
+      letter-spacing: -0.02em;
     }
 
-    .cta {
+    .gradient-text {
+      background: linear-gradient(90deg, var(--purple), var(--neon), var(--cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .inferred {
+      color: var(--text-dim);
+      font-family: Inter, sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    .btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 13px 20px;
-      border-radius: 10px;
-      background: var(--neon);
-      color: #001329;
+      justify-content: center;
+      gap: 9px;
+      min-height: 48px;
+      padding: 0 22px;
+      border-radius: 12px;
       font-weight: 700;
-      text-decoration: none;
-      box-shadow: 0 0 25px rgba(0, 170, 255, 0.18);
-      transition:
-        background 0.2s,
-        transform 0.2s,
-        box-shadow 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
     }
 
-    .cta:hover {
-      background: var(--cyan);
-      color: #001329;
-      transform: translateY(-2px);
-      box-shadow: 0 0 28px rgba(0, 229, 255, 0.25);
+    .btn:hover { transform: translateY(-2px); text-shadow: none; }
+
+    .btn-primary {
+      color: var(--on-accent);
+      background: linear-gradient(135deg, var(--cyan), var(--neon));
+      box-shadow: 0 10px 28px rgba(0, 170, 255, 0.22);
+    }
+    .btn-primary:hover { color: var(--on-accent); box-shadow: 0 14px 36px rgba(0, 229, 255, 0.3); }
+
+    .btn-ghost {
+      color: var(--text-bright);
+      border: 1px solid var(--border-glow);
+      background: var(--surface);
+    }
+    .btn-ghost:hover { color: var(--cyan); border-color: var(--cyan); }
+
+    /* ---------- Hero visual: decorative card ---------- */
+    .card-stack {
+      position: relative;
+      width: min(100%, 270px);
+      aspect-ratio: 5 / 7;
+      margin-inline: auto;
+      isolation: isolate;
     }
 
-    .sections {
-      padding-bottom: 80px;
+    .card-back {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border: 1px solid var(--border-glow);
+      border-radius: 20px;
+      background: var(--surface-strong);
     }
+    .card-back.b1 { transform: rotate(-8deg) translate(-16px, 10px); border-color: rgba(170, 102, 255, 0.4); }
+    .card-back.b2 { transform: rotate(8deg) translate(16px, 12px); border-color: rgba(0, 255, 136, 0.3); }
+
+    .card {
+      height: 100%;
+      padding: 11px;
+      border: 1px solid var(--border-glow);
+      border-radius: 20px;
+      background:
+        linear-gradient(145deg, rgba(170, 102, 255, 0.22), transparent 45%),
+        linear-gradient(320deg, rgba(0, 229, 255, 0.14), transparent 45%),
+        var(--surface-strong);
+      box-shadow: 0 28px 60px var(--shadow), 0 0 44px rgba(170, 102, 255, 0.14);
+      transform: rotate(3deg);
+      animation: card-float 6s ease-in-out infinite;
+    }
+
+    @keyframes card-float { 50% { transform: rotate(1deg) translateY(-10px); } }
+
+    .card-frame {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+    }
+
+    .card-title {
+      padding: 11px 13px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-bright);
+      font-family: Cinzel, Georgia, serif;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .card-art {
+      position: relative;
+      display: grid;
+      place-items: center;
+      flex: 1;
+      overflow: hidden;
+      background: radial-gradient(circle at center, rgba(255, 170, 0, 0.16), transparent 62%);
+    }
+
+    .card-art::before {
+      content: "";
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border: 1px solid var(--border-glow);
+      border-radius: 50%;
+      box-shadow: 0 0 32px rgba(170, 102, 255, 0.3), inset 0 0 22px rgba(0, 229, 255, 0.12);
+    }
+
+    .mana-wheel {
+      position: relative;
+      width: 108px;
+      height: 108px;
+      animation: spin 24s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .mana {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      color: #07111c;
+      font-size: 17px;
+      font-weight: 800;
+      box-shadow: 0 0 18px rgba(255, 255, 255, 0.12);
+    }
+
+    .m-w { top: -8px;  left: 35px;  background: #fff0b8; }
+    .m-u { top: 25px;  right: -8px; background: #62c9ff; }
+    .m-b { right: 6px; bottom: -6px; background: #4a3a63; color: #fff; }
+    .m-r { left: 6px;  bottom: -6px; background: #ff7a70; }
+    .m-g { top: 25px;  left: -8px;  background: #63e59e; }
+
+    .card-type {
+      padding: 9px 13px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      color: var(--text-bright);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .card-text {
+      padding: 12px 13px 14px;
+      color: var(--text);
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    /* ---------- Quick-glance strip ---------- */
+    .glance {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 52px;
+    }
+
+    .glance-item {
+      position: relative;
+      overflow: hidden;
+      padding: 20px 18px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface);
+      box-shadow: 0 10px 28px var(--shadow);
+    }
+
+    .glance-item::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 3px;
+      background: var(--accent);
+    }
+
+    .glance-item:nth-child(1) { --accent: var(--purple); }
+    .glance-item:nth-child(2) { --accent: var(--amber); }
+    .glance-item:nth-child(3) { --accent: var(--green); }
+
+    .glance-label {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .glance-value {
+      color: var(--text-bright);
+      font-family: Cinzel, Georgia, serif;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    /* ---------- Sections ---------- */
+    .intro {
+      margin: 0 0 24px;
+      color: var(--text-bright);
+      font-size: clamp(24px, 4vw, 34px);
+      line-height: 1.25;
+    }
+
+    .sections { padding-bottom: 80px; }
 
     .section {
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       overflow: hidden;
-      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      transition:
-        border-color 0.25s,
-        box-shadow 0.25s;
+      border-radius: 18px;
+      background: var(--surface);
+      box-shadow: 0 12px 30px var(--shadow);
+      scroll-margin-top: 90px;
+      transition: border-color 0.25s, box-shadow 0.25s;
     }
 
-    .section:hover {
-      border-color: var(--border-glow);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-    }
+    .section:hover { border-color: var(--border-glow); }
+
+    .section:nth-of-type(1) { --accent: var(--purple); }
+    .section:nth-of-type(2) { --accent: var(--neon); }
+    .section:nth-of-type(3) { --accent: var(--amber); }
+    .section:nth-of-type(4) { --accent: var(--green); }
 
     .section-head {
-      width: 100%;
-      padding: 20px 22px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 15px;
+      width: 100%;
+      min-height: 76px;
+      padding: 18px 22px;
       border: 0;
-      background: none;
       color: var(--text-bright);
-      cursor: pointer;
-      text-align: left;
+      background: transparent;
       font-family: Inter, sans-serif;
       font-size: 17px;
-      font-weight: 600;
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
     }
 
     .number {
       display: grid;
       place-items: center;
-      flex-shrink: 0;
-      width: 32px;
-      height: 32px;
-      border: 1px solid var(--neon);
+      flex: 0 0 36px;
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid var(--accent);
       border-radius: 50%;
-      color: var(--cyan);
-      font-size: 13px;
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 700;
     }
 
-    .section-title {
-      flex: 1;
-    }
+    .section-title { flex: 1; }
 
     .toggle {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
       color: var(--text-dim);
-      font-size: 24px;
-      font-weight: 400;
+      font-size: 20px;
+      line-height: 1;
+      transition: color 0.2s, border-color 0.2s;
     }
+
+    .section-head:hover .toggle { color: var(--accent); border-color: var(--accent); }
 
     .section-body {
       display: grid;
       grid-template-rows: 1fr;
-      transition: grid-template-rows 0.3s ease;
+      transition: grid-template-rows 0.34s ease;
     }
 
     .section-body > div {
       overflow: hidden;
+      visibility: visible;
+      transition: visibility 0s linear 0s;
     }
 
-    .section-content {
-      padding: 0 22px 23px 68px;
+    .section.closed .section-body { grid-template-rows: 0fr; }
+    .section.closed .section-body > div { visibility: hidden; transition-delay: 0.34s; }
+
+    .section-content { padding: 0 24px 26px 73px; }
+
+    .section-content p { max-width: 680px; margin: 0 0 12px; }
+
+    .section-content strong { color: var(--text-bright); }
+
+    .prompt-label {
+      margin: 18px 0 8px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
 
-    .section-content p {
-      margin: 0 0 12px;
+    .list {
+      margin: 8px 0 0;
+      padding: 0;
+      list-style: none;
     }
 
-    .section-content ul {
-      margin: 8px 0;
-      padding-left: 20px;
+    .list li {
+      position: relative;
+      margin: 10px 0;
+      padding: 12px 15px 12px 42px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(100, 140, 200, 0.05);
     }
 
-    .section-content li {
-      margin: 7px 0;
+    .list li::before {
+      content: "✦";
+      position: absolute;
+      top: 11px;
+      left: 15px;
+      color: var(--accent);
     }
 
-    .section.closed .section-body {
-      grid-template-rows: 0fr;
+    .collab-box {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 18px;
+      padding: 16px;
+      border: 1px solid rgba(0, 255, 136, 0.28);
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.09), rgba(0, 229, 255, 0.04));
     }
 
-    .section.closed .section-content {
-      padding-bottom: 0;
+    .collab-icon {
+      display: grid;
+      place-items: center;
+      flex: 0 0 48px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      color: var(--on-accent);
+      background: linear-gradient(135deg, var(--green), var(--cyan));
+      font-size: 21px;
     }
 
-    .inferred {
-      color: var(--text-dim);
-      font-size: 13px;
-    }
+    .collab-box strong { display: block; color: var(--text-bright); }
+    .collab-box span.note { color: var(--text-dim); font-size: 14px; }
 
-    a {
-      color: var(--neon);
-      text-decoration: none;
-    }
-
-    a:hover {
-      color: var(--cyan);
-    }
-
+    /* ---------- Footer ---------- */
     footer {
-      padding: 30px 0 45px;
+      padding: 30px 0 46px;
       border-top: 1px solid var(--border);
       color: var(--text-dim);
       font-size: 13px;
       text-align: center;
     }
 
-    @media (max-width: 600px) {
-      .hero {
-        padding-top: 65px;
-      }
+    footer strong { color: var(--text); font-family: Cinzel, Georgia, serif; }
+    footer .legal { margin: 8px 0 0; font-size: 12px; opacity: 0.85; }
 
-      .hero-line {
-        font-size: 26px;
-      }
+    /* ---------- Scroll reveal ---------- */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
 
-      .section-content {
-        padding-left: 22px;
+    /* ---------- Responsive ---------- */
+    @media (max-width: 760px) {
+      .hero { grid-template-columns: 1fr; gap: 50px; padding-top: 60px; text-align: center; }
+      .eyebrow, .hero-actions { justify-content: center; }
+      .hero-line { margin-inline: auto; }
+      .card-stack { width: 230px; }
+      .glance { grid-template-columns: 1fr; }
+      .intro { text-align: center; }
+    }
+
+    @media (max-width: 560px) {
+      .hero-actions { flex-direction: column; }
+      .btn { width: 100%; }
+      .section-head { padding: 16px; }
+      .section-content { padding: 0 16px 22px; }
+      .collab-box { align-items: flex-start; }
+      .brand { font-size: 15px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
       }
+      .reveal { opacity: 1; transform: none; }
     }
   </style>
 </head>
 
 <body>
-  <div class="background"></div>
-  <div class="grid"></div>
-  <div class="orb orb-one"></div>
-  <div class="orb orb-two"></div>
-  <div class="orb orb-three"></div>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="bg-gradient" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
+  <div class="orb orb-3" aria-hidden="true"></div>
 
   <header>
-    <nav>
-      <div class="brand">Kieran O'Keeffe</div>
+    <div class="container nav">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">✦</span>
+        <span>Kieran O'Keeffe</span>
+      </div>
 
       <div class="controls">
-        <button
-          class="icon-button"
-          id="theme"
-          type="button"
-          title="Toggle light or dark mode"
-          aria-label="Toggle light or dark mode"
-        >
-          ☀
-        </button>
-
-        <button
-          class="icon-button"
-          id="collapse"
-          type="button"
-          title="Collapse all sections"
-          aria-label="Collapse or expand all sections"
-        >
-          ⊟
-        </button>
+        <button class="icon-btn" id="theme-btn" type="button"
+                title="Switch to light mode" aria-label="Switch between light and dark mode">☀</button>
+        <button class="icon-btn" id="collapse-btn" type="button"
+                title="Collapse all sections" aria-label="Collapse or expand all sections">⊟</button>
       </div>
-    </nav>
+    </div>
   </header>
 
-  <main>
+  <main id="main">
     <div class="container">
 
-      <section class="hero">
-        <div class="eyebrow">
-          Serious hobby · creative project
+      <!-- HERO -->
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <div class="eyebrow">Serious hobby · Creative project</div>
+          <h1 id="page-title">Kieran O'Keeffe</h1>
+          <p class="role">Magic: The Gathering player</p>
+
+          <p class="hero-line">
+            Magic: The Gathering is my serious hobby: a game I
+            <span class="gradient-text">play, explore and want to share</span>
+            with others. <span class="inferred">[inferred]</span>
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#collaborate" data-open="collaborate">
+              <span aria-hidden="true">⚔</span> Collaborate with me
+            </a>
+            <a class="btn btn-ghost" href="#my-hobby" data-open="my-hobby">
+              <span aria-hidden="true">◇</span> Explore my hobby
+            </a>
+          </div>
         </div>
 
-        <h1>Kieran O'Keeffe</h1>
-
-        <p class="role">
-          Magic: The Gathering player
-        </p>
-
-        <p class="hero-line">
-          Magic: The Gathering is my serious hobby: a game I play,
-          explore and want to share with others.
-          <span class="inferred">[inferred]</span>
-        </p>
-
-        #collaborate
-          Collaborate with me →
-        </a>
+        <!-- Decorative card (purely visual) -->
+        <div class="card-stack" role="img" aria-label="Decorative trading card illustration">
+          <div class="card-back b1"></div>
+          <div class="card-back b2"></div>
+          <div class="card">
+            <div class="card-frame">
+              <div class="card-title">Kieran O'Keeffe</div>
+              <div class="card-art">
+                <div class="mana-wheel" aria-hidden="true">
+                  <span class="mana m-w">☀</span>
+                  <span class="mana m-u">≈</span>
+                  <span class="mana m-b">●</span>
+                  <span class="mana m-r">▲</span>
+                  <span class="mana m-g">♣</span>
+                </div>
+              </div>
+              <div class="card-type">Player — Serious Hobbyist</div>
+              <div class="card-text">Plays Magic: The Gathering. Open to sharing the game with others.</div>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <div class="sections">
+      <!-- AT A GLANCE -->
+      <div class="glance reveal" aria-label="At a glance">
+        <div class="glance-item">
+          <span class="glance-label">The game</span>
+          <span class="glance-value">Magic: The Gathering</span>
+        </div>
+        <div class="glance-item">
+          <span class="glance-label">The focus</span>
+          <span class="glance-value">A serious hobby</span>
+        </div>
+        <div class="glance-item">
+          <span class="glance-label">The goal</span>
+          <span class="glance-value">Collaborate with players</span>
+        </div>
+      </div>
 
-        <section class="section">
-          <button
-            class="section-head"
-            type="button"
-            aria-expanded="true"
-          >
+      <!-- SECTIONS -->
+      <div class="sections">
+        <h2 class="intro reveal">A personal space for the game, the ideas and the people around it.</h2>
+
+        <section class="section reveal" id="my-hobby">
+          <button class="section-head" type="button" aria-expanded="true" aria-controls="body-1">
             <span class="number">1</span>
-            <span class="section-title">
-              My Magic: The Gathering hobby
-            </span>
+            <span class="section-title">My Magic: The Gathering hobby</span>
             <span class="toggle" aria-hidden="true">−</span>
           </button>
-
-          <div class="section-body">
+          <div class="section-body" id="body-1">
             <div>
               <div class="section-content">
+                <p>Playing the card game <strong>Magic: The Gathering</strong>.</p>
                 <p>
-                  Playing the card game
-                  <strong>Magic: The Gathering</strong>
-                  is my serious hobby and creative project.
-                </p>
-
-                <p>
-                  This page is a personal space to capture my interest
-                  in the game and the ideas I explore through playing it.
+                  It is a serious hobby and a creative project for me.
                   <span class="inferred">[inferred]</span>
                 </p>
               </div>
@@ -524,11 +810,168 @@
           </div>
         </section>
 
-        <section class="section">
-          <button
-            class="section-head"
-            type="button"
-            aria-expanded="true"
-          >
+        <section class="section reveal" id="why-i-play">
+          <button class="section-head" type="button" aria-expanded="true" aria-controls="body-2">
             <span class="number">2</span>
-            <span class="
+            <span class="section-title">Why I play</span>
+            <span class="toggle" aria-hidden="true">−</span>
+          </button>
+          <div class="section-body" id="body-2">
+            <div>
+              <div class="section-content">
+                <p>
+                  This page is for me first: a place for reflection and clarity
+                  about a hobby I take seriously.
+                </p>
+                <div class="prompt-label">Prompts to answer in my own words</div>
+                <ul class="list">
+                  <li>What do I enjoy most about playing?</li>
+                  <li>What has the game taught me so far?</li>
+                  <li>What do I want to try next?</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section reveal" id="exploring">
+          <button class="section-head" type="button" aria-expanded="true" aria-controls="body-3">
+            <span class="number">3</span>
+            <span class="section-title">What I'm exploring</span>
+            <span class="toggle" aria-hidden="true">−</span>
+          </button>
+          <div class="section-body" id="body-3">
+            <div>
+              <div class="section-content">
+                <ul class="list">
+                  <li>Playing the card game Magic: The Gathering</li>
+                  <li>Exploring the hobby as a serious creative project <span class="inferred">[inferred]</span></li>
+                  <li>Sharing the game with other players <span class="inferred">[inferred]</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section reveal" id="collaborate">
+          <button class="section-head" type="button" aria-expanded="true" aria-controls="body-4">
+            <span class="number">4</span>
+            <span class="section-title">Collaborate with me</span>
+            <span class="toggle" aria-hidden="true">−</span>
+          </button>
+          <div class="section-body" id="body-4">
+            <div>
+              <div class="section-content">
+                <p>
+                  I would like to collaborate with other Magic: The Gathering players.
+                  <span class="inferred">[inferred]</span>
+                </p>
+
+                <div class="collab-box">
+                  <div class="collab-icon" aria-hidden="true">🤝</div>
+                  <div>
+                    <strong>Open to playing, swapping ideas and exploring together</strong>
+                    <span class="note">Contact details to be added.</span>
+                  </div>
+                </div>
+                <!-- Add a contact link here, e.g. <a href="mailto:you@example.com">Email me</a> -->
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <strong>Kieran O'Keeffe</strong> · <span id="year"></span> · Built with the AI Badge
+      <p class="legal">
+        Unofficial fan page. Magic: The Gathering is a trademark of Wizards of the Coast LLC.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var themeBtn = document.getElementById("theme-btn");
+      var collapseBtn = document.getElementById("collapse-btn");
+      var sections = Array.prototype.slice.call(document.querySelectorAll(".section"));
+
+      /* ---- Theme ---- */
+      function updateThemeBtn() {
+        var light = root.classList.contains("light");
+        themeBtn.textContent = light ? "☾" : "☀";
+        themeBtn.title = light ? "Switch to dark mode" : "Switch to light mode";
+      }
+
+      themeBtn.addEventListener("click", function () {
+        root.classList.toggle("light");
+        try {
+          localStorage.setItem("theme", root.classList.contains("light") ? "light" : "dark");
+        } catch (e) {}
+        updateThemeBtn();
+      });
+      updateThemeBtn();
+
+      /* ---- Sections ---- */
+      function setOpen(section, open) {
+        section.classList.toggle("closed", !open);
+        section.querySelector(".section-head").setAttribute("aria-expanded", String(open));
+        section.querySelector(".toggle").textContent = open ? "−" : "+";
+      }
+
+      function updateCollapseBtn() {
+        var allOpen = sections.every(function (s) { return !s.classList.contains("closed"); });
+        collapseBtn.textContent = allOpen ? "⊟" : "⊞";
+        collapseBtn.title = allOpen ? "Collapse all sections" : "Expand all sections";
+        collapseBtn.dataset.action = allOpen ? "collapse" : "expand";
+      }
+
+      sections.forEach(function (section) {
+        section.querySelector(".section-head").addEventListener("click", function () {
+          setOpen(section, section.classList.contains("closed"));
+          updateCollapseBtn();
+        });
+      });
+
+      collapseBtn.addEventListener("click", function () {
+        var open = collapseBtn.dataset.action === "expand";
+        sections.forEach(function (s) { setOpen(s, open); });
+        updateCollapseBtn();
+      });
+      updateCollapseBtn();
+
+      /* Hero buttons open their target section before scrolling */
+      Array.prototype.forEach.call(document.querySelectorAll("[data-open]"), function (link) {
+        link.addEventListener("click", function () {
+          var target = document.getElementById(link.getAttribute("data-open"));
+          if (target && target.classList.contains("closed")) {
+            setOpen(target, true);
+            updateCollapseBtn();
+          }
+        });
+      });
+
+      /* ---- Scroll reveal ---- */
+      var items = document.querySelectorAll(".reveal");
+      if ("IntersectionObserver" in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12 });
+        Array.prototype.forEach.call(items, function (el) { observer.observe(el); });
+      } else {
+        Array.prototype.forEach.call(items, function (el) { el.classList.add("visible"); });
+      }
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
